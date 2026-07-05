@@ -37,6 +37,10 @@ HEADERS = {
 
 def load_cookies(cookie_string):
     """Parse a raw 'name=value; name2=value2' Cookie header into a cookie jar."""
+    # Strip stray newlines/carriage returns that sometimes sneak in when the
+    # cookie string is copy-pasted (HTTP headers can't contain raw newlines).
+    cookie_string = cookie_string.replace("\n", "").replace("\r", "")
+
     jar = requests.cookies.RequestsCookieJar()
     for part in cookie_string.split(";"):
         part = part.strip()
